@@ -195,7 +195,6 @@ class Command(object):
         stdin = None
         processed_args = []
         cmd = []
-        pipe = subp.PIPE if subp.PIPE != -1 else None
 
         # aggregate any with contexts
         for prepend in self.prepend_stack: cmd.extend(prepend)
@@ -212,7 +211,7 @@ class Command(object):
                 del kwargs[key]
                 
         # check if we're piping via composition
-        stdin = pipe
+        stdin = None
         actual_stdin = None
         if args:
             first_arg = args.pop(0)
@@ -276,14 +275,14 @@ class Command(object):
         
         
         # stdout redirection
-        stdout = pipe
+        stdout = None
         out = self.call_args["out"]
         if out:
             if isinstance(out, file): stdout = out
             else: stdout = file(str(out), "w")
         
         # stderr redirection
-        stderr = pipe
+        stderr = None
         err = self.call_args["err"]
         if err:
             if isinstance(err, file): stderr = err
