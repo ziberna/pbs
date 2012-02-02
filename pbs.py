@@ -211,7 +211,7 @@ class Command(object):
                 del kwargs[key]
                 
         # check if we're piping via composition
-        stdin = subp.PIPE
+        stdin = subp.PIPE if subp.PIPE != -1 else None
         actual_stdin = None
         if args:
             first_arg = args.pop(0)
@@ -275,14 +275,14 @@ class Command(object):
         
         
         # stdout redirection
-        stdout = subp.PIPE
+        stdout = subp.PIPE if subp.PIPE != -1 else None
         out = self.call_args["out"]
         if out:
             if isinstance(out, file): stdout = out
             else: stdout = file(str(out), "w")
         
         # stderr redirection
-        stderr = subp.PIPE
+        stderr = subp.PIPE if subp.PIPE != -1 else None
         err = self.call_args["err"]
         if err:
             if isinstance(err, file): stderr = err
